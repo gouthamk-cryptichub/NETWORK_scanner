@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 import scapy.all as scapy
+import optparse
 
+def get_args():
+    parser = optparse.OptionParser()
+    parser.add_option("-t", "--target", dest="ip", help="IP range of target subnet(0.0.0.0/24).")
+    (value, args) = parser.parse_args()
+    if not value.ip:
+        parser.error("[-] ERROR missing target IP range, use --help for more info.")
+    else:
+        return value
 def netscan(ip):
     arp_req = scapy.ARP(pdst=ip)
     broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
@@ -12,4 +21,6 @@ def netscan(ip):
     print("==========================================")
     for result in live:
         print(" " + result[1].psrc + "    ------>    " + result[1].hwsrc)
-netscan("10.0.2.1/24")
+
+value = get_args()
+netscan(value.ip)
