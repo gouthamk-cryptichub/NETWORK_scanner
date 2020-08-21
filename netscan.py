@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 import scapy.all as scapy
 import optparse
+import argparse
 
 def get_args():
-    parser = optparse.OptionParser()
-    parser.add_option("-t", "--target", dest="ip", help="IP range of target subnet(0.0.0.0/24).")
-    (value, args) = parser.parse_args()
+    try:
+        parser = optparse.OptionParser()
+        parser.add_option("-t", "--target", dest="ip", help="IP range of target subnet(0.0.0.0/24).")
+        (value, args) = parser.parse_args()
+    except:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-t", "--target", dest="ip", help="IP range of target subnet(0.0.0.0/24).")
+        value= parser.parse_args()
     if not value.ip:
         parser.error("[-] ERROR missing target IP range, use --help for more info.")
     else:
